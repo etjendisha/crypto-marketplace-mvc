@@ -1,0 +1,66 @@
+﻿@model X.PagedList.IPagedList<CryptoMarketplace.Models.Coin>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewBag.Title = "Crypto Marketplace";
+}
+
+<h2>Crypto Coins</h2>
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    <p>
+        <input type="search" placeholder="coin..." value="@ViewData["symbol"]" name="symbol" style="width:500px"/>
+        <input type="submit" value="Search" class="btn btn-primary"/>
+    </p>
+}
+
+<table class="table table table-striped table-bordered table-hover">
+    <thead class="btn-primary">
+    <tr>
+        <th>
+            Symbol
+        </th>
+        <th>
+            Last Price
+        </th>
+        <th>
+            Open Price  
+        </th>
+        <th>
+            Price Change %
+        </th>
+    </tr>
+    </thead>
+
+
+    @foreach (var item in Model)
+    {
+        <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Symbol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceChangePercent)
+            </td>
+        </tr>
+        </tbody>
+
+    }
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, pageNumber =>Url.Action("Index",
+    new { pageNumber}))
